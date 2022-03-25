@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "me.ghosttypes.reaper.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "Bootstrap",
+    "meteor.FakePlayerMixin",
+    "meteor.MeteorBootstrap",
+    "MincraftClientMixin",
+    "meteor.NametagMixin",
+    "meteor.NotificationProxy"
+  ]
+}

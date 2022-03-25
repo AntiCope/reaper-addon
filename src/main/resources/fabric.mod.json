@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "reaper",
+  "version": "${version}",
+  "name": "Reaper",
+  "description": "The Best Meteor Addon",
+  "authors": [
+    "NotGhostTypes"
+  ],
+  "contact": {
+    "discord": "https://discord.gg/kKjSHnXVZv"
+  },
+  "environment": "client",
+  "entrypoints": {
+    "meteor": [
+      "me.ghosttypes.reaper.Reaper"
+    ]
+  },
+  "mixins": [
+    "reaper.mixins.json"
+  ],
+  "custom": {
+    "meteor-client:color": "225,25,25"
+  },
+  "depends": {
+    "java": ">=17",
+    "minecraft": ">=1.18",
+    "meteor-client": "*"
+  }
+}
