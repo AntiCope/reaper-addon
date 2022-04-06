@@ -3,7 +3,16 @@
 
 name: Java CI with Gradle
 
-on: [pull_request]
+concurrency: 
+  group: "build-1.18"
+  cancel-in-progress: true
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '*.md'
+      
 
 jobs:
   build:
@@ -20,9 +29,14 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+    - name: Remove *-dev.jar
+      run: rm ./build/libs/*-dev.jar || echo ""
+    - uses: "marvinpinto/action-automatic-releases@latest"
       with:
-        name: pull-request-build
-        path: build/libs/
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest-1.18"
+          prerelease: false
+          title: "1.18 Build"
+          files: |
+            ./build/libs/*.jar
     
