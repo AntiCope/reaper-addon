@@ -28,7 +28,6 @@ dependencies {
 
     // Meteor
     modImplementation "meteordevelopment:meteor-client:${project.meteor_version}"
-    modImplementation 'com.squareup.okhttp:okhttp:2.7.5'
 }
 
 processResources {
