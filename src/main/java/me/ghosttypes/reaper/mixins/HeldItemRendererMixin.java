@@ -13,6 +13,7 @@ public class HeldItemRendererMixin {
 
     @Inject(method = "updateHeldItems", at = @At(value = "HEAD"), cancellable = true)
     private void onUpdateHeldItem(CallbackInfo ci) {
-        if (MeteorClient.EVENT_BUS.post(UpdateHeldItemEvent.get()).isCancelled()) ci.cancel();
+        HeldItemRenderer heldItemRenderer = (HeldItemRenderer) (Object) this;
+        if (MeteorClient.EVENT_BUS.post(UpdateHeldItemEvent.get(heldItemRenderer)).isCancelled()) ci.cancel();
     }
 }

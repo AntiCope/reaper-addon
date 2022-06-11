@@ -3,7 +3,6 @@ package me.ghosttypes.reaper.util.services;
 import com.mojang.text2speech.Narrator;
 import me.ghosttypes.reaper.modules.ML;
 import me.ghosttypes.reaper.modules.chat.NotificationSettings;
-import me.ghosttypes.reaper.util.network.DiscordWebhook;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;

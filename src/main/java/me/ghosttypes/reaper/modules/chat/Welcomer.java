@@ -40,19 +40,17 @@ public class Welcomer extends ReaperModule {
         assert mc.player != null;
         if (mc.player.age < 30) return;
         if ((eventPacket instanceof GameMessageS2CPacket packet)) {
-            if (packet.getSender().toString().contains("000000000")) {
-                String msg = packet.getMessage().getString();
-                if (msg.contains("left")) {
-                    boolean valid = false;
-                    String name = msg.substring(0, msg.indexOf(" "));
-                    for (PlayerEntity player : mc.world.getPlayers()) {
-                        if (player.getEntityName().equals(name) || player.getDisplayName().asString().contains(name)) {
-                            valid = true;
-                            break;
-                        }
+            String msg = packet.content().getString();
+            if (msg.contains("left")) {
+                boolean valid = false;
+                String name = msg.substring(0, msg.indexOf(" "));
+                for (PlayerEntity player : mc.world.getPlayers()) {
+                    if (player.getEntityName().equals(name) || player.getDisplayName().getString().contains(name)) {
+                        valid = true;
+                        break;
                     }
-                    if (valid) sendLeaveMsg(name);
                 }
+                if (valid) sendLeaveMsg(name);
             }
         }
 

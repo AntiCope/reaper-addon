@@ -3,8 +3,8 @@ package me.ghosttypes.reaper.util.misc;
 
 import me.ghosttypes.reaper.util.services.TL;
 import meteordevelopment.meteorclient.utils.Utils;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
+import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +17,7 @@ public class MessageUtil {
     public static ArrayList<Message> removalQueue = new ArrayList<>();
 
     public static boolean isServerMessage(GameMessageS2CPacket packet) {
-        return packet.getSender().toString().contains("000000000");
+        return true;
     }
 
     // Sending messages
@@ -40,7 +40,7 @@ public class MessageUtil {
     public static void sendMessage(String msg) {
         if (!Utils.canUpdate()) return;
         if (mc.player == null || msg == null) return;
-        mc.player.networkHandler.sendPacket(new ChatMessageC2SPacket(msg));
+        mc.player.sendMessage(Text.of(msg));
     }
 
     public static void sendEzMessage(String target, String ezMessage, long delay, boolean sendDM) {

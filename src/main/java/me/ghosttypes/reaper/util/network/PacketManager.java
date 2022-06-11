@@ -108,7 +108,7 @@ public class PacketManager {
     // Item Interactions
 
     public static void interactItem(Hand hand) {
-        sendPacket(new PlayerInteractItemC2SPacket(hand));
+        sendPacket(new PlayerInteractItemC2SPacket(hand, 0));
     }
 
 
@@ -134,10 +134,10 @@ public class PacketManager {
             pendingPlaces.remove(result);
         });
         if (packet) { // "packet placing" (sending interaction + swing packet directly)
-            sendPacket(new PlayerInteractBlockC2SPacket(hand, result));
+            sendPacket(new PlayerInteractBlockC2SPacket(hand, result, 0));
             swingHand(hand == Hand.OFF_HAND);
         } else { // client placing
-            mc.interactionManager.interactBlock(mc.player, mc.world, hand, result);
+            mc.interactionManager.interactBlock(mc.player, hand, result);
             mc.player.swingHand(hand);
         }
     }

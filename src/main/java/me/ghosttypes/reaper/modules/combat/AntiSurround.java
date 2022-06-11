@@ -145,7 +145,7 @@ public class AntiSurround extends ReaperModule {
                             int prevSlot = mc.player.getInventory().selectedSlot;
                             if (mc.player.getOffHandStack().getItem() != Items.OBSIDIAN)
                                 mc.player.getInventory().selectedSlot = obsidian.slot();
-                            mc.interactionManager.interactBlock(mc.player, mc.world, obsidian.getHand(), new BlockHitResult(mc.player.getPos(), Direction.DOWN, CityUtils.getCrystalPos(breakPos, support.get()), true));
+                            mc.interactionManager.interactBlock(mc.player, obsidian.getHand(), new BlockHitResult(mc.player.getPos(), Direction.DOWN, CityUtils.getCrystalPos(breakPos, support.get()), true));
                             mc.player.getInventory().selectedSlot = prevSlot;
                         });
                     }
@@ -154,7 +154,7 @@ public class AntiSurround extends ReaperModule {
                         int prevSlot = mc.player.getInventory().selectedSlot;
                         if (mc.player.getOffHandStack().getItem() != Items.END_CRYSTAL)
                             mc.player.getInventory().selectedSlot = crystal.slot();
-                        mc.interactionManager.interactBlock(mc.player, mc.world, crystal.getHand(), new BlockHitResult(mc.player.getPos(), Direction.DOWN, CityUtils.getCrystalPos(breakPos, false), true));
+                        mc.interactionManager.interactBlock(mc.player, crystal.getHand(), new BlockHitResult(mc.player.getPos(), Direction.DOWN, CityUtils.getCrystalPos(breakPos, false), true));
                         mc.player.getInventory().selectedSlot = prevSlot;
                     });
                 }

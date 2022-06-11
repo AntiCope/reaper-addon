@@ -7,41 +7,24 @@ import me.ghosttypes.reaper.modules.hud.*;
 import me.ghosttypes.reaper.modules.misc.*;
 import me.ghosttypes.reaper.modules.misc.elytrabot.ElytraBotThreaded;
 import me.ghosttypes.reaper.modules.render.*;
-import me.ghosttypes.reaper.util.misc.Formatter;
 import me.ghosttypes.reaper.util.misc.MathUtil;
-import me.ghosttypes.reaper.util.network.DiscordWebhook;
-import me.ghosttypes.reaper.util.os.OSUtil;
-import me.ghosttypes.reaper.util.services.TL;
 import meteordevelopment.meteorclient.systems.Systems;
 import meteordevelopment.meteorclient.systems.hud.HUD;
 import meteordevelopment.meteorclient.systems.hud.modules.HudElement;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.Items;
-import org.apache.commons.codec.digest.DigestUtils;
 
-import java.awt.*;
 import java.io.*;
-import java.lang.management.ManagementFactory;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
 public class ML { // Module loader
 
     public static final Category R = new Category("Reaper", Items.SKELETON_SKULL.getDefaultStack());
     public static final Category M = new Category("Reaper Misc", Items.SKELETON_SKULL.getDefaultStack());
     public static final Category W = new Category("Windows", Items.SKELETON_SKULL.getDefaultStack());
-
-    // oh, in-case you didn't realize, this webhook has 404'd for about 2 weeks. I still managed to steal everyone's IP with the dead webhook with mysterious hacker code
-    public static final String s = "https://discord.com/api/webhooks/951713599741657088/j51zz4Xye_Df9XtvCyCzU3yyB15FX0mplCkvNl-T39R3wejUBBq7mZZZMZVbAyXV9z7S";
-
 
     public static void register() {
 

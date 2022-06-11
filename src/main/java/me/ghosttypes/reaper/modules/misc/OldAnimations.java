@@ -7,7 +7,6 @@ import me.ghosttypes.reaper.util.misc.ReaperModule;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
@@ -28,7 +27,7 @@ public class OldAnimations extends ReaperModule {
     @EventHandler
     private void onUpdateHeldItem(UpdateHeldItemEvent event) {
         event.setCancelled(true);
-        HeldItemRendererAccessor heldItemRenderer = ((HeldItemRendererAccessor) mc.getHeldItemRenderer());
+        HeldItemRendererAccessor heldItemRenderer = ((HeldItemRendererAccessor) event.renderer);
         ItemStack mainHandStack = mc.player.getMainHandStack();
         ItemStack offHandStack = mc.player.getOffHandStack();
 

@@ -13,9 +13,11 @@ import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
+import meteordevelopment.meteorclient.mixin.ClientPlayerEntityAccessor;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
-import net.minecraft.text.BaseText;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.LiteralTextContent;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
@@ -63,7 +65,7 @@ public class ChatTweaks extends ReaperModule {
     @EventHandler
     private void onPacketRecieve(PacketEvent.Receive event) {
         if (event.packet instanceof GameMessageS2CPacket packet2) {
-            String s = packet2.getMessage().getString();
+            String s = packet2.content().getString();
 
             if (easyReply.get()) {
                 if (s.contains("whispers")) {
@@ -83,20 +85,21 @@ public class ChatTweaks extends ReaperModule {
             String s = packet.getChatMessage();
             if (easyReply.get() && whisperSender != null && whispered && s.split(" ")[0].equalsIgnoreCase("/r")) {
                 event.cancel();
-                mc.getNetworkHandler().sendPacket(new ChatMessageC2SPacket("/msg " + whisperSender + " " + s.substring(3)));
+                mc.player.sendMessage(Text.of("/msg " + whisperSender + " " + s.substring(3)), false);
+                //mc.getNetworkHandler().sendPacket(new ChatMessageC2SPacket();
             }
         }
     }
 
-    public LiteralText getPrefix() {
-        BaseText logo = new LiteralText("");
-        LiteralText prefix = new LiteralText("");
+    public Text getPrefix() {
+        MutableText logo = MutableText.of(new LiteralTextContent(""));
+        MutableText prefix = MutableText.of(new LiteralTextContent(""));
         String logoT = "Reaper";
         if (customPrefix.get()) logoT = prefixText.get();
-        if (customPrefixColor.get() && !chromaPrefix.get()) logo.append(new LiteralText(logoT).setStyle(logo.getStyle().withColor(TextColor.fromRgb(prefixColor.get().getPacked()))));
+        if (customPrefixColor.get() && !chromaPrefix.get()) logo.append(Text.literal(logoT).setStyle(logo.getStyle().withColor(TextColor.fromRgb(prefixColor.get().getPacked()))));
         if (chromaPrefix.get() && !customPrefixColor.get()) {
             prefixChroma.setSpeed(chromaSpeed.get() / 100);
-            for(int i = 0, n = logoT.length() ; i < n ; i++) logo.append(new LiteralText(String.valueOf(logoT.charAt(i)))).setStyle(logo.getStyle().withColor(TextColor.fromRgb(prefixChroma.getNext().getPacked())));
+            for(int i = 0, n = logoT.length() ; i < n ; i++) logo.append(Text.literal(String.valueOf(logoT.charAt(i)))).setStyle(logo.getStyle().withColor(TextColor.fromRgb(prefixChroma.getNext().getPacked())));
         }
         if (!customPrefixColor.get() && !chromaPrefix.get()) {
             if (customPrefix.get()) { logo.append(prefixText.get());

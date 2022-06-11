@@ -16,7 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectUtil;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -387,7 +387,7 @@ public class Interactions {
 
     public static UUID getOwnerUUID(LivingEntity livingEntity) {
         if (livingEntity instanceof TameableEntity tameableEntity) if (tameableEntity.isTamed()) return tameableEntity.getOwnerUuid();
-        if (livingEntity instanceof HorseBaseEntity horseBaseEntity) return horseBaseEntity.getOwnerUuid();
+        if (livingEntity instanceof AbstractHorseEntity horseBaseEntity) return horseBaseEntity.getOwnerUuid();
         return null;
     }
 

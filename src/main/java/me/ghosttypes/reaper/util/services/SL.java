@@ -6,7 +6,6 @@ import me.ghosttypes.reaper.modules.hud.AuraSync;
 import me.ghosttypes.reaper.modules.misc.RPC;
 import me.ghosttypes.reaper.util.misc.MathUtil;
 import me.ghosttypes.reaper.util.misc.MessageUtil;
-import me.ghosttypes.reaper.util.network.DiscordWebhook;
 import me.ghosttypes.reaper.util.os.OSUtil;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.systems.modules.Modules;

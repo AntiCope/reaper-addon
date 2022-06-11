@@ -29,13 +29,13 @@ public class NoDesync extends ReaperModule {
     private void onBlockPlace(InteractBlockEvent event) {
         if (!placeBlock.get()) return;
         BlockPos placePos = event.result.getBlockPos();
-        if (placePos != null) mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, placePos, Direction.UP));
+        if (placePos != null) mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, placePos, Direction.UP, 0));
     }
 
     @EventHandler
     private void onBlockBreak(BreakBlockEvent event) {
         if (!breakBlock.get()) return;
         BlockPos breakPos = event.blockPos;
-        if (breakPos != null) mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, breakPos, Direction.UP));
+        if (breakPos != null) mc.player.networkHandler.sendPacket(new PlayerActionC2SPacket(PlayerActionC2SPacket.Action.STOP_DESTROY_BLOCK, breakPos, Direction.UP, 0));
     }
 }

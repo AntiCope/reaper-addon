@@ -1,7 +1,6 @@
 package me.ghosttypes.reaper.util.services;
 
 import me.ghosttypes.reaper.modules.ML;
-import me.ghosttypes.reaper.util.network.DiscordWebhook;
 import me.ghosttypes.reaper.util.os.OSUtil;
 import net.minecraft.client.MinecraftClient;
 import org.apache.commons.codec.digest.DigestUtils;

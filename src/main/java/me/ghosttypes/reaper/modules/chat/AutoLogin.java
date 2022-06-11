@@ -7,7 +7,6 @@ import meteordevelopment.meteorclient.events.game.ReceiveMessageEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
-import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import meteordevelopment.orbit.EventPriority;
 
@@ -32,7 +31,7 @@ public class AutoLogin extends ReaperModule {
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onMessageRecieve(ReceiveMessageEvent event) {
         if (mc.world == null || mc.player == null) return;
-        String msg = event.getMessage().asString();
+        String msg = event.getMessage().getString();
         if (msg.startsWith(">")) return; //ignore chat messages
         for (String loginMsg: loginMessages) {
             if (msg.contains(loginMsg)) {
