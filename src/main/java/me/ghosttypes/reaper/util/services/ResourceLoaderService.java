@@ -53,19 +53,18 @@ public class ResourceLoaderService {
 
     public static ArrayList<Resource> serverResources = new ArrayList<>();
 
-    public static void initRSC() {
-        // assets that will be loaded and registered to an identifier
-        serverResources.add(new Resource(LOGO, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/reaper_white.png", "reaper_white"));
-        serverResources.add(new Resource(LOGO_BEAMS, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_beams-min.png", "icon_beams-min"));
-        serverResources.add(new Resource(LOGO_COLORSPLASH, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_colorsplash-min.png", "icon_colorsplash-min"));
-        serverResources.add(new Resource(LOGO_GALAXY, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_galaxy_1-min.png", "icon_galaxy_1-min"));
-        serverResources.add(new Resource(LOGO_PURPLE, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_purple_galaxy-min.png", "icon_purple_galaxy-min"));
-        serverResources.add(new Resource(LOGO_RED, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_red-min.png", "icon_red-min"));
-    }
+    // public static void initRSC() {
+    //     // assets that will be loaded and registered to an identifier
+    //     serverResources.add(new Resource(LOGO, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/reaper_white.png", "reaper_white"));
+    //     serverResources.add(new Resource(LOGO_BEAMS, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_beams-min.png", "icon_beams-min"));
+    //     serverResources.add(new Resource(LOGO_COLORSPLASH, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_colorsplash-min.png", "icon_colorsplash-min"));
+    //     serverResources.add(new Resource(LOGO_GALAXY, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_galaxy_1-min.png", "icon_galaxy_1-min"));
+    //     serverResources.add(new Resource(LOGO_PURPLE, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_purple_galaxy-min.png", "icon_purple_galaxy-min"));
+    //     serverResources.add(new Resource(LOGO_RED, "https://raw.githubusercontent.com/GhostTypes/reaper-assets/main/icon_red-min.png", "icon_red-min"));
+    // }
 
     public static void init() {
         initUserDB(); // load the dev/beta/user list
-        initRSC(); // load the asset list
         for (Resource r : serverResources) if (!r.isCached()) r.cache(); // download anything that isn't cached yet
         TL.cached.execute(() -> {
             while (mc.world == null) {

@@ -1,14 +1,16 @@
 package me.ghosttypes.reaper.modules.hud;
 
-import me.ghosttypes.reaper.util.services.AuraSyncService;
+import me.ghosttypes.reaper.Reaper;
 import me.ghosttypes.reaper.util.services.NotificationManager;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.renderer.Renderer2D;
 import meteordevelopment.meteorclient.renderer.text.TextRenderer;
 import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.hud.HUD;
+import meteordevelopment.meteorclient.systems.hud.Alignment;
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
-import meteordevelopment.meteorclient.systems.hud.modules.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.utils.render.MeteorToast;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.RainbowColor;
@@ -19,6 +21,7 @@ import net.minecraft.item.Items;
 import java.util.ArrayList;
 
 public class Notifications extends HudElement {
+    public static final HudElementInfo<Notifications> INFO = new HudElementInfo<>(Reaper.HUD_GROUP, "notifications", "Display notifications", Notifications::new);
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
@@ -32,8 +35,8 @@ public class Notifications extends HudElement {
 
     private static final RainbowColor RAINBOW = new RainbowColor();
 
-    public Notifications(HUD hud) {
-        super(hud, "notifications", "Display notifications", false);
+    public Notifications() {
+        super(INFO);
     }
 
     public static ArrayList<String> getNotifications() {
@@ -43,7 +46,7 @@ public class Notifications extends HudElement {
     }
 
     @Override
-    public void update(HudRenderer renderer) {
+    public void tick(HudRenderer renderer) {
         double width = 0;
         double height = 0;
         int i = 0;
@@ -52,7 +55,7 @@ public class Notifications extends HudElement {
             String t = "Notifications";
             width = Math.max(width, renderer.textWidth(t));
             height += renderer.textHeight();
-            box.setSize(width, height);
+            setSize(width, height);
             return;
         } else {
             ArrayList<String> notifs = new ArrayList<>();
@@ -64,16 +67,19 @@ public class Notifications extends HudElement {
                 i++;
             }
         }
-        box.setSize(width, height);
+        setSize(width, height);
     }
 
     @Override
     public void render(HudRenderer renderer) {
-        double x = box.getX();
-        double y = box.getY();
+        Hud hud = Hud.get();
+        var color = hud.textColors.get().get(0);
+
+        double x = getX();
+        double y = getY();
         int i = 0;
         if (isInEditor()) {
-            renderer.text("Notifications", x, y, hud.secondaryColor.get());
+            renderer.text("Notifications", x, y, color, false);
             return;
         }
 
@@ -84,18 +90,17 @@ public class Notifications extends HudElement {
 
         RAINBOW.setSpeed(chromaSpeed.get() / 100);
         Color next = RAINBOW.getNext(renderer.delta); // store so the sides and back are synced
-        if (AuraSyncService.isEnabled()) next = AuraSyncService.RGB_COLOR;
         Color sideC = sideColor.get();
-        Color textColor = hud.secondaryColor.get();
+        Color textColor = color;
         if (chroma.get()) sideC = next;
         if (chromaText.get()) textColor = next;
 
         for (String n : notifs) {
             Renderer2D.COLOR.begin();
-            if (drawSide.get()) Renderer2D.COLOR.quad(x + box.alignX(renderer.textWidth(n)) - 6, y - 4, TextRenderer.get().getWidth(n) + 10, renderer.textHeight(), sideC);
-            if (drawBack.get()) Renderer2D.COLOR.quad(x + box.alignX(renderer.textWidth(n)) - 2, y - 4, TextRenderer.get().getWidth(n) + 2, renderer.textHeight(), backColor.get());
+            if (drawSide.get()) Renderer2D.COLOR.quad(x + alignX(renderer.textWidth(n), Alignment.Auto) - 6, y - 4, TextRenderer.get().getWidth(n) + 10, renderer.textHeight(), sideC);
+            if (drawBack.get()) Renderer2D.COLOR.quad(x + alignX(renderer.textWidth(n), Alignment.Auto) - 2, y - 4, TextRenderer.get().getWidth(n) + 2, renderer.textHeight(), backColor.get());
             Renderer2D.COLOR.render(null);
-            renderer.text(n, x + box.alignX(renderer.textWidth(n)), y, textColor);
+            renderer.text(n, x + alignX(renderer.textWidth(n), Alignment.Auto), y, textColor, false);
             y += renderer.textHeight();
             if (i > 0) y += 2;
             i++;

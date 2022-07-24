@@ -1,21 +1,24 @@
 package me.ghosttypes.reaper.modules.hud;
 
-import me.ghosttypes.reaper.util.services.AuraSyncService;
+import me.ghosttypes.reaper.Reaper;
 import me.ghosttypes.reaper.util.services.SpotifyService;
 import meteordevelopment.meteorclient.renderer.Renderer2D;
 import meteordevelopment.meteorclient.renderer.text.TextRenderer;
 import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.hud.HUD;
+import meteordevelopment.meteorclient.systems.hud.Alignment;
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
-import meteordevelopment.meteorclient.systems.hud.modules.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.RainbowColor;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 
 public class SpotifyHud extends HudElement {
+    public static final HudElementInfo<SpotifyHud> INFO = new HudElementInfo<>(Reaper.HUD_GROUP, "spotify-hud", "Display the current song playing in spotify.", SpotifyHud::new);
 
-    public SpotifyHud(HUD hud) {
-        super(hud, "spotify-hud", "Display the current song playing in spotify.", false);
+    public SpotifyHud() {
+        super(INFO);
     }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -32,7 +35,7 @@ public class SpotifyHud extends HudElement {
     private static final RainbowColor RAINBOW = new RainbowColor();
 
     @Override
-    public void update(HudRenderer renderer) {
+    public void tick(HudRenderer renderer) {
         double width = 0;
         double height = 0;
 
@@ -48,24 +51,26 @@ public class SpotifyHud extends HudElement {
 
         width = Math.max(width, renderer.textWidth(t));
         height += renderer.textHeight();
-        box.setSize(width, height);
+        setSize(width, height);
     }
 
     @Override
     public void render(HudRenderer renderer) {
-        double x = box.getX();
-        double y = box.getY();
+        Hud hud = Hud.get();
+        var color = hud.textColors.get().get(0);
+
+        double x = getX();
+        double y = getY();
 
         if (isInEditor()) {
-            renderer.text("Spotify HUD", x, y, hud.secondaryColor.get());
+            renderer.text("Spotify HUD", x, y, color, false);
             return;
         }
 
         RAINBOW.setSpeed(chromaSpeed.get() / 100);
         Color next = RAINBOW.getNext(renderer.delta); // store so the sides and back are synced
-        if (AuraSyncService.isEnabled()) next = AuraSyncService.RGB_COLOR;
         Color sideC = sideColor.get();
-        Color textColor = hud.secondaryColor.get();
+        Color textColor = color;
         if (chroma.get()) sideC = next;
         if (chromaText.get()) textColor = next;
 
@@ -74,9 +79,9 @@ public class SpotifyHud extends HudElement {
         else t = "Idle.";
 
         Renderer2D.COLOR.begin();
-        if (drawSide.get()) Renderer2D.COLOR.quad(x + box.alignX(renderer.textWidth(t)) - 6, y - 4, TextRenderer.get().getWidth(t) + 10, renderer.textHeight(), sideC);
-        if (drawBack.get()) Renderer2D.COLOR.quad(x + box.alignX(renderer.textWidth(t)) - 2, y - 4, TextRenderer.get().getWidth(t) + 2, renderer.textHeight(), backColor.get());
+        if (drawSide.get()) Renderer2D.COLOR.quad(x + alignX(renderer.textWidth(t), Alignment.Auto) - 6, y - 4, TextRenderer.get().getWidth(t) + 10, renderer.textHeight(), sideC);
+        if (drawBack.get()) Renderer2D.COLOR.quad(x + alignX(renderer.textWidth(t), Alignment.Auto) - 2, y - 4, TextRenderer.get().getWidth(t) + 2, renderer.textHeight(), backColor.get());
         Renderer2D.COLOR.render(null);
-        renderer.text(t, x + box.alignX(renderer.textWidth(t)), y - 2, textColor);
+        renderer.text(t, x + alignX(renderer.textWidth(t), Alignment.Auto), y - 2, textColor, false);
     }
 }

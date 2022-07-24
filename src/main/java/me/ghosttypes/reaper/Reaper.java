@@ -2,12 +2,11 @@ package me.ghosttypes.reaper;
 
 import me.ghosttypes.reaper.modules.ML;
 import me.ghosttypes.reaper.util.misc.Formatter;
-import me.ghosttypes.reaper.util.player.Interactions;
 import me.ghosttypes.reaper.util.services.SL;
-import me.ghosttypes.reaper.util.services.TL;
 import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.systems.config.Config;
+import meteordevelopment.meteorclient.systems.hud.HudGroup;
 
 import java.io.File;
 import java.lang.invoke.MethodHandles;
@@ -19,6 +18,7 @@ public class Reaper extends MeteorAddon {
     public static final File RECORDINGS = new File(FOLDER, "recordings");
     public static final File ASSETS = new File(FOLDER, "assets");
     public static final File USER_ASSETS = new File(ASSETS, "user");
+    public static final HudGroup HUD_GROUP = new HudGroup("Reaper");
 
 	@Override
 	public void onInitialize() {
@@ -44,5 +44,7 @@ public class Reaper extends MeteorAddon {
         System.out.println("[Reaper] " + m);
     }
 
-
+    public String getPackage() {
+        return "me.ghosttypes.reaper";
+    }
 }

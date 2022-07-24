@@ -1,18 +1,18 @@
 package me.ghosttypes.reaper.modules.hud;
 
+import me.ghosttypes.reaper.Reaper;
 import me.ghosttypes.reaper.util.misc.Formatter;
-import me.ghosttypes.reaper.util.player.Interactions;
-import meteordevelopment.meteorclient.systems.hud.HUD;
+import meteordevelopment.meteorclient.systems.hud.Alignment;
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
-import meteordevelopment.meteorclient.systems.hud.modules.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 
 import java.util.ArrayList;
 
 public class Killfeed extends HudElement {
 
-    public Killfeed(HUD hud) {
-        super(hud, "killfeed", "Display a list of your kills", false);
-    }
+    public static final HudElementInfo<Killfeed> INFO = new HudElementInfo<>(Reaper.HUD_GROUP, "killfeed", "Display a list of your kills", Killfeed::new);
 
     private final ArrayList<String> feed = new ArrayList<>();
 
@@ -21,9 +21,12 @@ public class Killfeed extends HudElement {
         if (Formatter.hasKillFeed()) feed.addAll(Formatter.getKillFeed());
     }
 
+    public Killfeed() {
+        super(INFO);
+    }
 
     @Override
-    public void update(HudRenderer renderer) {
+    public void tick(HudRenderer renderer) {
         updateFeed();
         double width = 0;
         double height = 0;
@@ -42,27 +45,29 @@ public class Killfeed extends HudElement {
                 i++;
             }
         }
-        box.setSize(width, height);
+        setSize(width, height);
     }
 
     @Override
     public void render(HudRenderer renderer) {
+        Hud hud = Hud.get();
+        var color = hud.textColors.get().get(0);
         updateFeed();
-        double x = box.getX();
-        double y = box.getY();
+        double x = getX();
+        double y = getY();
         if (isInEditor()) {
-            renderer.text("Killfeed", x, y, hud.secondaryColor.get());
+            renderer.text("Killfeed", x, y, color, false);
             return;
         }
         int i = 0;
         if (feed.isEmpty()) {
             String t = "Killfeed";
-            renderer.text(t, x + box.alignX(renderer.textWidth(t)), y, hud.secondaryColor.get());
+            renderer.text(t, x + alignX(renderer.textWidth(t), Alignment.Auto), y, color, false);
         } else {
-            renderer.text("Killfeed", x + box.alignX(renderer.textWidth("Killfeed")), y, hud.secondaryColor.get());
+            renderer.text("Killfeed", x + alignX(renderer.textWidth("Killfeed"), Alignment.Auto), y, color, false);
             y += renderer.textHeight();
             for (String bind : feed) {
-                renderer.text(bind, x + box.alignX(renderer.textWidth(bind)), y, hud.secondaryColor.get());
+                renderer.text(bind, x + alignX(renderer.textWidth(bind), Alignment.Auto), y, color, false);
                 y += renderer.textHeight();
                 if (i > 0) y += 2;
                 i++;

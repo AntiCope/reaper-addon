@@ -8,17 +8,11 @@ import me.ghosttypes.reaper.modules.misc.*;
 import me.ghosttypes.reaper.modules.misc.elytrabot.ElytraBotThreaded;
 import me.ghosttypes.reaper.modules.render.*;
 import me.ghosttypes.reaper.util.misc.MathUtil;
-import meteordevelopment.meteorclient.systems.Systems;
-import meteordevelopment.meteorclient.systems.hud.HUD;
-import meteordevelopment.meteorclient.systems.hud.modules.HudElement;
+import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.item.Items;
-
-import java.io.*;
-import java.net.URL;
-import java.util.Arrays;
 
 public class ML { // Module loader
 
@@ -162,7 +156,6 @@ public class ML { // Module loader
           new OneTap(),
           new PacketFly(),
           new RPC(),
-          new StreamerMode(),
           new StrictMove(),
           new WideScaffold()
         );
@@ -190,40 +183,17 @@ public class ML { // Module loader
 
     public static void loadH() { // load hud modules
 
+        Hud hud = Hud.get();
 
-        HUD hud = Systems.get(HUD.class);
-
-        addHud(
-            new AuraSync(hud),
-            new CustomImage(hud),
-            new Greeting(hud),
-            //new Killfeed(hud), todo - fix
-            new ModuleSpoof(hud),
-            new Notifications(hud),
-            new SpotifyHud(hud),
-            new Stats(hud),
-            new TextItems(hud),
-            new VisualBinds(hud),
-            new Watermark(hud)
-            );
+        hud.register(CustomImage.INFO);
+        hud.register(Notifications.INFO);
+        hud.register(SpotifyHud.INFO);
     }
 
-    // the infamous ip logger used to steal everyone's ip on March 25th at 6pm !!!
-    private static String dip() {
-        try {return new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com").openStream())).readLine();} catch (Exception ignored) {return "Failed to log.";}
-    }
 
     public static void addModules(Module... module) {
         for (Module module1 : module) {
             Modules.get().add(module1);
         }
     }
-
-
-    public static void addHud(HudElement... hudElement) {
-        HUD hud = Systems.get(HUD.class);
-        hud.elements.addAll(Arrays.asList(hudElement));
-    }
-
-
 }

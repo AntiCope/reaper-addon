@@ -5,8 +5,6 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import me.ghosttypes.reaper.Reaper;
 import me.ghosttypes.reaper.util.misc.MathUtil;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.utils.Init;
-import meteordevelopment.meteorclient.utils.InitStage;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
@@ -17,9 +15,6 @@ import java.util.UUID;
 import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 public class GlobalManager {
-
-
-
     public static ArrayList<DeathEntry> deathEntries = new ArrayList<>();
     public static final Object2IntMap<UUID> deaths = new Object2IntOpenHashMap<>(); // todo - implement as a placeholder for autoez
 

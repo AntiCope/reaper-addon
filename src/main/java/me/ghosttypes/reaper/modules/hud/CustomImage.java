@@ -1,16 +1,16 @@
 package me.ghosttypes.reaper.modules.hud;
 
 
+import me.ghosttypes.reaper.Reaper;
 import me.ghosttypes.reaper.util.misc.MathUtil;
-import me.ghosttypes.reaper.util.services.AuraSyncService;
 import me.ghosttypes.reaper.util.services.ResourceLoaderService;
 import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.renderer.GL;
 import meteordevelopment.meteorclient.renderer.Renderer2D;
 import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.hud.HUD;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
-import meteordevelopment.meteorclient.systems.hud.modules.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElement;
+import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.render.color.RainbowColor;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
@@ -18,6 +18,8 @@ import meteordevelopment.orbit.EventHandler;
 import net.minecraft.util.Identifier;
 
 public class CustomImage extends HudElement {
+
+    public static final HudElementInfo<CustomImage> INFO = new HudElementInfo<>(Reaper.HUD_GROUP, "custom-image", "Displays a custom image", CustomImage::new);
 
     public enum LogoMode {File, URL}
 
@@ -29,9 +31,9 @@ public class CustomImage extends HudElement {
     public final Setting<LogoMode> logoMode = sgGeneral.add(new EnumSetting.Builder<LogoMode>().name("logo").description("Which logo to use.").defaultValue(LogoMode.File).onChanged(fileName1 -> setTexture()).build());
     private final Setting<String> fileName = sgGeneral.add(new StringSetting.Builder().name("file-name").description("The file to load the texture from").defaultValue("cope.png").visible(() -> logoMode.get() == LogoMode.File).onChanged(fileName1 -> setTexture()).build());
     private final Setting<String> url = sgGeneral.add(new StringSetting.Builder().name("url").description("The URL to load the texture from").defaultValue("cope.com").visible(() -> logoMode.get() == LogoMode.URL).onChanged(fileName2 -> setTexture()).build());
-    private final Setting<Double> scale = sgGeneral.add(new DoubleSetting.Builder().name("scale").defaultValue(2).min(1).sliderMin(1).sliderMax(5).build());
-    private final Setting<Double> boxW = sgGeneral.add(new DoubleSetting.Builder().name("box-width").defaultValue(100).min(1).sliderMin(1).sliderMax(600).build());
-    private final Setting<Double> boxH = sgGeneral.add(new DoubleSetting.Builder().name("box-height").description("The scale.").defaultValue(100).min(1).sliderMin(1).sliderMax(600).build());
+    private final Setting<Double> scale = sgGeneral.add(new DoubleSetting.Builder().name("scale").onChanged(aDouble -> calculateSize()).defaultValue(2).min(1).sliderMin(1).sliderMax(5).build());
+    private final Setting<Double> boxW = sgGeneral.add(new DoubleSetting.Builder().name("box-width").onChanged(aDouble -> calculateSize()).defaultValue(100).min(1).sliderMin(1).sliderMax(600).build());
+    private final Setting<Double> boxH = sgGeneral.add(new DoubleSetting.Builder().name("box-height").onChanged(aDouble -> calculateSize()).description("The scale.").defaultValue(100).min(1).sliderMin(1).sliderMax(600).build());
     public final Setting<Boolean> update = sgGeneral.add(new BoolSetting.Builder().name("refresh").description("Reload the image after a set period of time").defaultValue(false).visible(() -> logoMode.get() == LogoMode.URL).build());
     public final Setting<Integer> updateDelay = sgGeneral.add(new IntSetting.Builder().name("refresh-delay").defaultValue(3).min(1).sliderMax(10).visible(update::get).build());
     public final Setting<Boolean> chroma = sgGeneral.add(new BoolSetting.Builder().name("chroma").description("Chroma logo animation.").defaultValue(false).build());
@@ -40,25 +42,25 @@ public class CustomImage extends HudElement {
 
     private long lastRefresh = MathUtil.now();
 
-    public CustomImage(HUD hud) {
-        super(hud, "custom-image", "Displays a custom image");
+    public CustomImage() {
+        super(INFO);
+        calculateSize();
     }
 
     @EventHandler
     public void onGameJoin(GameJoinedEvent event) { setTexture();} // so it loads when the player first joins the game
 
-    @Override
-    public void update(HudRenderer renderer) {
-        box.setSize(boxW.get() * scale.get(), boxH.get() * scale.get());
+    public void calculateSize() {
+        setSize(boxW.get() * scale.get(), boxH.get() * scale.get());
     }
 
     @Override
     public void render(HudRenderer renderer) {
         if (!Utils.canUpdate()) return;
-        double x = box.getX();
-        double y = box.getY();
-        int w = (int) box.width;
-        int h = (int) box.height;
+        double x = getX();
+        double y = getY();
+        int w = getWidth();
+        int h = getHeight();
 
         if (update.get() && logoMode.get() == LogoMode.URL && MathUtil.msPassed(lastRefresh) >= updateDelay.get() * 1000) { // updating from URL
             lastRefresh = MathUtil.now();
@@ -69,8 +71,7 @@ public class CustomImage extends HudElement {
         Renderer2D.TEXTURE.begin();
         if (chroma.get()) {
             RAINBOW.setSpeed(chromaSpeed.get() / 100);
-            if (AuraSyncService.isEnabled()) Renderer2D.TEXTURE.texQuad(x, y, w, h, AuraSyncService.RGB_COLOR);
-            else Renderer2D.TEXTURE.texQuad(x, y, w, h, RAINBOW.getNext(renderer.delta));
+            Renderer2D.TEXTURE.texQuad(x, y, w, h, RAINBOW.getNext(renderer.delta));
         } else {
             Renderer2D.TEXTURE.texQuad(x, y, w, h, color.get());
         }
