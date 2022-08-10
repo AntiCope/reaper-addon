@@ -20,7 +20,7 @@ public class SL { // Service loader
         MessageUtil.init();
         NotificationManager.init();
         SpotifyService.init();
-        WellbeingService.init();
+        //WellbeingService.init(); useless
         Runtime.getRuntime().addShutdownHook(new Thread(TL::shutdown));
         Reaper.log("Started services (" + MathUtil.msPassed(start) + "ms)");
 
