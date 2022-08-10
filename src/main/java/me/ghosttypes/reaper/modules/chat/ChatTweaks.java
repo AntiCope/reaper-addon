@@ -82,7 +82,7 @@ public class ChatTweaks extends ReaperModule {
     @EventHandler
     private void onPacketSend(PacketEvent.Send event) {
         if (event.packet instanceof ChatMessageC2SPacket packet) {
-            String s = packet.getChatMessage();
+            String s = packet.chatMessage();
             if (easyReply.get() && whisperSender != null && whispered && s.split(" ")[0].equalsIgnoreCase("/r")) {
                 event.cancel();
                 mc.player.sendMessage(Text.of("/msg " + whisperSender + " " + s.substring(3)), false);

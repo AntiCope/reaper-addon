@@ -23,8 +23,6 @@ public class Reaper extends MeteorAddon {
 	@Override
 	public void onInitialize() {
         log("Loading Reaper " + VERSION);
-        Config.get().customWindowTitle.set(true);
-        Config.get().customWindowTitleText.set("Reaper " + VERSION);
         MeteorClient.EVENT_BUS.registerLambdaFactory("me.ghosttypes.reaper", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
         ML.load(); // load modules
         SL.load(); // load services

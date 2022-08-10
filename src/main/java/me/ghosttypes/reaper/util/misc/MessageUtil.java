@@ -2,6 +2,7 @@ package me.ghosttypes.reaper.util.misc;
 
 
 import me.ghosttypes.reaper.util.services.TL;
+import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.meteorclient.utils.Utils;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.text.Text;
@@ -33,8 +34,8 @@ public class MessageUtil {
     }
 
     public static void sendClientMessage(String msg) {
-        if (mc.player == null || msg == null) return;
-        mc.player.sendChatMessage(msg);
+        if (msg == null) return;
+        ChatUtils.sendPlayerMsg(msg);
     }
 
     public static void sendMessage(String msg) {

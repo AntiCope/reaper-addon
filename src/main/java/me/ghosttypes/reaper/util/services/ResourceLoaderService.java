@@ -37,9 +37,9 @@ public class ResourceLoaderService {
     }
 
     public static void initUserDB() {
-        DEVELOPERS.addAll(List.of("GhostTypes", "EurekaEffect", "Kiriyaga", "Wide_Cat"));
-        initDB(BETA, BETA_DB_URL);
-        initDB(USER, USER_DB_URL);
+        //DEVELOPERS.addAll(List.of("GhostTypes", "EurekaEffect", "Kiriyaga", "Wide_Cat"));
+        //initDB(BETA, BETA_DB_URL);
+        //initDB(USER, USER_DB_URL);
     }
 
 
