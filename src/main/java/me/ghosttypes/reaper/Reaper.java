@@ -9,7 +9,6 @@ import meteordevelopment.meteorclient.systems.config.Config;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 
 import java.io.File;
-import java.lang.invoke.MethodHandles;
 
 public class Reaper extends MeteorAddon {
     public static String VERSION = "0.2.1";
@@ -23,7 +22,6 @@ public class Reaper extends MeteorAddon {
 	@Override
 	public void onInitialize() {
         log("Loading Reaper " + VERSION);
-        MeteorClient.EVENT_BUS.registerLambdaFactory("me.ghosttypes.reaper", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
         ML.load(); // load modules
         SL.load(); // load services
         if (!FOLDER.exists()) FOLDER.mkdirs(); // make sure folders exists
