@@ -118,7 +118,7 @@ public class ML { // Module loader
             //new AutoCrystal(),
             new BedGod(),
             //new CevBreaker(),
-            new LongJump(),
+            new ReaperLongJump(),
             //new PistonAura(),
             new QuickMend(),
             new ReaperSurround(),
