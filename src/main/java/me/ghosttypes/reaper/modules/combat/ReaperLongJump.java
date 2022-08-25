@@ -18,7 +18,7 @@ import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.util.math.Vec3d;
 import org.lwjgl.glfw.GLFW;
 
-public class LongJump extends Module {
+public class ReaperLongJump extends Module {
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgDelay = settings.createGroup("Delay");
@@ -47,8 +47,8 @@ public class LongJump extends Module {
     private final Setting<Boolean> step = sgAC.add(new BoolSetting.Builder().name("allow-step").defaultValue(false).build());
     private final Setting<Double> stepHeight = sgAC.add(new DoubleSetting.Builder().name("step-height").defaultValue(1).min(0.5).sliderRange(0.5, 10).visible(step::get).build());
 
-    public LongJump() {
-        super(ML.R, "long-jump", "Manipulate movement packets to travel quickly.");
+    public ReaperLongJump() {
+        super(ML.R, "reaper-long-jump", "Manipulate movement packets to travel quickly.");
     }
 
     private int chargeTicked;
