@@ -13,6 +13,7 @@ import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.FakePlayer;
 import meteordevelopment.meteorclient.utils.entity.fakeplayer.FakePlayerManager;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
@@ -59,34 +60,33 @@ public class FakePlayerMixin {
         loop = sgGeneral.add(new BoolSetting.Builder().name("loop").description("Whether to loop the recorded movement after playing.").defaultValue(true).build());
     }
 
-    @Inject(method = "onActivate", at = @At("HEAD"), remap = false)
-    private void onActivate(CallbackInfo ci) {
-        recording = false;
-        playing = false;
-        posList.clear();
-        posList2.clear();
-    }
-
-
     /**
      * @author Tyrannus, GhostTypes
      */
     @Overwrite(remap = false)
     public WWidget getWidget(GuiTheme theme) {
 
+        if (!Modules.get().get(FakePlayer.class).isActive()) return null;
+
         WVerticalList l = theme.verticalList(); // setup lists
         WHorizontalList w = theme.horizontalList();
 
-        WButton spawn = w.add(theme.button("Spawn")).widget(); // setup buttons
+        WButton spawn = w.add(theme.button("Spawn")).widget();
+        spawn.action = () -> {
+            FakePlayerManager.add(name.get(), health.get(), copyInv.get());
+        };
+    
         WButton clear = w.add(theme.button("Clear")).widget();
+        clear.action = () -> {
+            FakePlayerManager.add(name.get(), health.get(), copyInv.get());
+        };
+
         WButton start = w.add(theme.button("Start Recording")).widget();
         WButton stop = w.add(theme.button("Stop Recording")).widget();
         WButton play = w.add(theme.button("Play Recording")).widget();
         WButton importrec = w.add(theme.button("Import")).widget();
         WButton exportrec = w.add(theme.button("Export")).widget();
 
-        spawn.action = () -> { if(((Module) ((Object) this)).isActive()) FakePlayerManager.add(name.get(), health.get(), copyInv.get());}; // set button actions
-        clear.action = () -> { if(((Module) ((Object) this)).isActive()) FakePlayerManager.clear();};
         play.action = () -> playing = true;
         start.action = () -> {
             posList.clear();
@@ -120,7 +120,7 @@ public class FakePlayerMixin {
         if (playing) { // playback
             if (!posList.isEmpty()) {
                 AnglePos angles = posList.remove(0);
-                FakePlayerManager.getPlayers().forEach(entity -> {
+                FakePlayerManager.forEach(entity -> {
                     entity.updateTrackedPositionAndAngles(angles.getPos().x, angles.getPos().y, angles.getPos().z, angles.getYaw(), angles.getPitch(), 3, false);
                     entity.updateTrackedHeadRotation(angles.getYaw(), 3);
                 });
