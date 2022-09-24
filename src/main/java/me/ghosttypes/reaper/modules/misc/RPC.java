@@ -44,7 +44,7 @@ public class RPC extends ReaperModule {
 
 
     public RPC() {
-        super(ML.M, "discord-presence", "Discord RPC for Reaper");
+        super(ML.M, "discord-presence-reaper", "Discord RPC for Reaper");
         runInMainMenu = true;
     }
 
