@@ -72,14 +72,10 @@ public class FakePlayerMixin {
         WHorizontalList w = theme.horizontalList();
 
         WButton spawn = w.add(theme.button("Spawn")).widget();
-        spawn.action = () -> {
-            FakePlayerManager.add(name.get(), health.get(), copyInv.get());
-        };
-    
+        spawn.action = () -> FakePlayerManager.add(name.get(), health.get(), copyInv.get());
+
         WButton clear = w.add(theme.button("Clear")).widget();
-        clear.action = () -> {
-            FakePlayerManager.add(name.get(), health.get(), copyInv.get());
-        };
+        clear.action = () -> FakePlayerManager.clear();
 
         WButton start = w.add(theme.button("Start Recording")).widget();
         WButton stop = w.add(theme.button("Stop Recording")).widget();
