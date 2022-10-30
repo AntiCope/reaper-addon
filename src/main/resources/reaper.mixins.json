@@ -12,7 +12,6 @@
     "meteor.FakePlayerMixin",
     "meteor.MeteorBootstrap",
     "MincraftClientMixin",
-    "meteor.NametagMixin",
     "meteor.NotificationProxy"
   ]
 }

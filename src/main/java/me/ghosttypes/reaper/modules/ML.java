@@ -166,7 +166,6 @@ public class ML { // Module loader
             new ExternalHUD(),
             new ExternalNotifications(),
             //new Effects(),
-            new Nametags(),
             new ReaperHoleESP()
         );
 
