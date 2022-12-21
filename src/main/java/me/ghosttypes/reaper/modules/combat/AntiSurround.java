@@ -14,7 +14,6 @@ import meteordevelopment.meteorclient.renderer.text.TextRenderer;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.meteorclient.utils.entity.TargetUtils;
-import meteordevelopment.meteorclient.utils.misc.Vec3;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
@@ -27,6 +26,7 @@ import net.minecraft.item.Items;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import org.joml.Vector3d;
 
 public class AntiSurround extends ReaperModule {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -176,7 +176,7 @@ public class AntiSurround extends ReaperModule {
     public void on2DRender(Render2DEvent event) {
         if (breakPos == null || !renderProgress.get()) return;
 
-        Vec3 pos = new Vec3(breakPos.getX() + 0.5, breakPos.getY() + 0.5, breakPos.getZ() + 0.5);
+        Vector3d pos = new Vector3d(breakPos.getX() + 0.5, breakPos.getY() + 0.5, breakPos.getZ() + 0.5);
         if (NametagUtils.to2D(pos, scale.get())) {
             String progress;
             NametagUtils.begin(pos);

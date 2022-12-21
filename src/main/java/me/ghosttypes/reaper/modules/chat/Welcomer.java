@@ -5,7 +5,6 @@ import me.ghosttypes.reaper.util.misc.MessageUtil;
 import me.ghosttypes.reaper.util.misc.ReaperModule;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.settings.*;
-import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
@@ -54,12 +53,14 @@ public class Welcomer extends ReaperModule {
             }
         }
 
-        if (eventPacket instanceof PlayerListS2CPacket playerListPacket) {
-            if (playerListPacket.getAction() == PlayerListS2CPacket.Action.ADD_PLAYER) {
-                PlayerListS2CPacket.Entry entry = playerListPacket.getEntries().get(0);
-                if (entry != null) {
-                    String name = entry.getProfile().getName();
-                    if (name != null) sendJoinMsg(name);
+        if (eventPacket instanceof PlayerListS2CPacket packet) {
+            for (PlayerListS2CPacket.Action action : packet.getActions()) {
+                if (action == PlayerListS2CPacket.Action.ADD_PLAYER) {
+                    PlayerListS2CPacket.Entry entry = packet.getEntries().get(0);
+                    if (entry != null) {
+                        String name = entry.profile().getName();
+                        if (name != null) sendJoinMsg(name);
+                    }
                 }
             }
         }
