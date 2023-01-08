@@ -404,7 +404,7 @@ public class ElytraBotThreaded extends ReaperModule {
 
         // stop if we reached the goal
         if (PlayerUtils.distanceTo(goal) < 15) {
-            mc.world.playSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(), new SoundEvent(new Identifier("minecraft:entity.player.levelup")), SoundCategory.PLAYERS, 100, 18, true);
+            mc.world.playSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(), SoundEvent.of(new Identifier("minecraft:entity.player.levelup")), SoundCategory.PLAYERS, 100, 18, true);
             info("Goal reached!");
             isRunning = false;
         }

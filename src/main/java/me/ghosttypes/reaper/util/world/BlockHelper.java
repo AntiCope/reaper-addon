@@ -1,11 +1,8 @@
 package me.ghosttypes.reaper.util.world;
 
-import me.ghosttypes.reaper.Reaper;
 import me.ghosttypes.reaper.util.network.PacketManager;
 import me.ghosttypes.reaper.util.player.Interactions;
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.utils.Utils;
-import meteordevelopment.meteorclient.utils.misc.Vec3;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.meteorclient.utils.world.CardinalDirection;
@@ -20,6 +17,7 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.*;
 import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
+import org.joml.Vector3d;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -86,7 +84,7 @@ public class BlockHelper {
         public boolean canSee() {return BlockHelper.canSee(mc.player, this.pos);}
 
         public Item asItem() {return this.getBlock().asItem();}
-        public Vec3 asVec3() {return vec3(this.pos);}
+        public Vector3d asVec3() {return vec3(this.pos);}
         public Vec3d asVec3d() {return vec3d(this.pos);}
         public Vec3i asVec3i() {return vec3i(this.pos);}
     }
@@ -107,8 +105,8 @@ public class BlockHelper {
     public static boolean isBedrock(BlockPos pos) {return getBlock(pos) == Blocks.BEDROCK;}
     public static boolean isEchest(BlockPos pos) {return getBlock(pos) == Blocks.ENDER_CHEST;}
     public static boolean isAnchor(BlockPos pos) {return getBlock(pos) == Blocks.RESPAWN_ANCHOR;}
-    public static Vec3 vec3(BlockPos pos) {
-        return new Vec3().set(pos.getX(), pos.getY(), pos.getZ());
+    public static Vector3d vec3(BlockPos pos) {
+        return new Vector3d(pos.getX(), pos.getY(), pos.getZ());
     }
     public static Vec3d vec3d(BlockPos pos) {return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);}
     public static Vec3i vec3i(BlockPos pos) {return new Vec3i(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);}
@@ -177,7 +175,7 @@ public class BlockHelper {
     }
 
     public static boolean isClickable(Block block) {
-        return block instanceof CraftingTableBlock || block instanceof AnvilBlock || block instanceof AbstractButtonBlock || block instanceof AbstractPressurePlateBlock || block instanceof BlockWithEntity || block instanceof BedBlock || block instanceof FenceGateBlock || block instanceof DoorBlock || block instanceof NoteBlock || block instanceof TrapdoorBlock;
+        return block instanceof CraftingTableBlock || block instanceof AnvilBlock || block instanceof ButtonBlock || block instanceof AbstractPressurePlateBlock || block instanceof BlockWithEntity || block instanceof BedBlock || block instanceof FenceGateBlock || block instanceof DoorBlock || block instanceof NoteBlock || block instanceof TrapdoorBlock;
     }
 
     public static List<BlockPos> getSphere(BlockPos centerPos, int radius, int height) {

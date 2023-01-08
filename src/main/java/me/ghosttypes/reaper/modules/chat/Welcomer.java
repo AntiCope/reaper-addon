@@ -55,10 +55,10 @@ public class Welcomer extends ReaperModule {
         }
 
         if (eventPacket instanceof PlayerListS2CPacket playerListPacket) {
-            if (playerListPacket.getAction() == PlayerListS2CPacket.Action.ADD_PLAYER) {
+            if (playerListPacket.getActions().contains(PlayerListS2CPacket.Action.ADD_PLAYER)) {
                 PlayerListS2CPacket.Entry entry = playerListPacket.getEntries().get(0);
                 if (entry != null) {
-                    String name = entry.getProfile().getName();
+                    String name = entry.profile().getName();
                     if (name != null) sendJoinMsg(name);
                 }
             }

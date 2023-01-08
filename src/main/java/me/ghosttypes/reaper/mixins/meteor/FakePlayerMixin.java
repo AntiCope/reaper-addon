@@ -75,7 +75,7 @@ public class FakePlayerMixin {
         spawn.action = () -> FakePlayerManager.add(name.get(), health.get(), copyInv.get());
 
         WButton clear = w.add(theme.button("Clear")).widget();
-        clear.action = () -> FakePlayerManager.clear();
+        clear.action = FakePlayerManager::clear;
 
         WButton start = w.add(theme.button("Start Recording")).widget();
         WButton stop = w.add(theme.button("Stop Recording")).widget();

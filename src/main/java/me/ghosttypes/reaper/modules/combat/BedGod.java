@@ -23,7 +23,6 @@ import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.meteorclient.utils.entity.TargetUtils;
-import meteordevelopment.meteorclient.utils.misc.Vec3;
 import meteordevelopment.meteorclient.utils.player.FindItemResult;
 import meteordevelopment.meteorclient.utils.player.InvUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
@@ -47,6 +46,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
+import org.joml.Vector3d;
 
 import java.util.List;
 
@@ -530,19 +530,16 @@ public class BedGod extends ReaperModule {
 
     @EventHandler
     private void onRender2D(Render2DEvent event) { // damage rendering
-        if (render.get() && bedRender != null && placeCheck(placePos) && target != null) {
-            if (bedRender.getPos() == null) return;
-            Vec3 textVec = BlockHelper.vec3(bedRender.getPos());
+        if (render.get() && bedRender != null && placeCheck(placePos) && target != null && bedRender.getPos() != null) {
+            Vector3d textVec = BlockHelper.vec3(bedRender.getPos());
             String damageText = String.valueOf(Math.round(placePos.getDamage() * 100.0) / 100.0);
-            if (textVec != null) {
-                if (NametagUtils.to2D(textVec, damageScale.get())) {
-                    NametagUtils.begin(textVec);
-                    TextRenderer.get().begin(1.0, false, true);
-                    final double w = TextRenderer.get().getWidth(damageText) / 2.0;
-                    TextRenderer.get().render(damageText, -w, 0.0, bedRender.getDamageColor());
-                    TextRenderer.get().end();
-                    NametagUtils.end();
-                }
+            if (NametagUtils.to2D(textVec, damageScale.get())) {
+                NametagUtils.begin(textVec);
+                TextRenderer.get().begin(1.0, false, true);
+                final double w = TextRenderer.get().getWidth(damageText) / 2.0;
+                TextRenderer.get().render(damageText, -w, 0.0, bedRender.getDamageColor());
+                TextRenderer.get().end();
+                NametagUtils.end();
             }
         }
     }
