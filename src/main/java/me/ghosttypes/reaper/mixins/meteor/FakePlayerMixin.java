@@ -12,17 +12,19 @@ import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.settings.BoolSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.systems.modules.Modules;
 import meteordevelopment.meteorclient.systems.modules.player.FakePlayer;
 import meteordevelopment.meteorclient.utils.entity.fakeplayer.FakePlayerManager;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.util.math.Vec3d;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -34,48 +36,36 @@ import static meteordevelopment.meteorclient.MeteorClient.mc;
 
 @Mixin(FakePlayer.class)
 public class FakePlayerMixin {
-
+    @Shadow(remap = false)
+    @Final
+    private SettingGroup sgGeneral;
 
     @Shadow(remap = false)
-    @Final private SettingGroup sgGeneral;
+    @Final
+    public Setting<String> name;
 
-    @Shadow(remap = false)
-    @Final public Setting<String> name;
-
-    @Shadow(remap = false)
-    @Final public Setting<Boolean> copyInv;
-
-    @Shadow(remap = false)
-    @Final public Setting<Integer> health;
-
-    @Unique private Setting<Boolean> loop = null;
-    @Unique private boolean recording = false;
-    @Unique private final List<AnglePos> posList = new ArrayList<>();
-    @Unique private final List<AnglePos> posList2 = new ArrayList<>();
-    @Unique private boolean playing = false;
-    @Unique private WTextBox b;
+    @Unique
+    private Setting<Boolean> loop = null;
+    @Unique
+    private boolean recording = false;
+    @Unique
+    private final List<AnglePos> posList = new ArrayList<>();
+    @Unique
+    private final List<AnglePos> posList2 = new ArrayList<>();
+    @Unique
+    private boolean playing = false;
+    @Unique
+    private WTextBox b;
 
     @Inject(method = "<init>", at = @At("TAIL"), remap = false)
     private void onInit(CallbackInfo ci) {
         loop = sgGeneral.add(new BoolSetting.Builder().name("loop").description("Whether to loop the recorded movement after playing.").defaultValue(true).build());
     }
 
-    /**
-     * @author Tyrannus, GhostTypes
-     */
-    @Overwrite(remap = false)
-    public WWidget getWidget(GuiTheme theme) {
-
-        if (!Modules.get().get(FakePlayer.class).isActive()) return null;
-
-        WVerticalList l = theme.verticalList(); // setup lists
+    @Inject(method = "getWidget", at = @At("RETURN"), cancellable = true, remap = false)
+    private void onGetWidget(GuiTheme theme, CallbackInfoReturnable<WWidget> info) {
         WHorizontalList w = theme.horizontalList();
-
-        WButton spawn = w.add(theme.button("Spawn")).widget();
-        spawn.action = () -> FakePlayerManager.add(name.get(), health.get(), copyInv.get());
-
-        WButton clear = w.add(theme.button("Clear")).widget();
-        clear.action = () -> FakePlayerManager.clear();
+        WVerticalList l = theme.verticalList(); // setup lists
 
         WButton start = w.add(theme.button("Start Recording")).widget();
         WButton stop = w.add(theme.button("Stop Recording")).widget();
@@ -102,17 +92,20 @@ public class FakePlayerMixin {
             }
         };
 
+        l.add(info.getReturnValue());
+        l.add(theme.horizontalSeparator()).expandX();
         l.add(w); // setup input box for recording name
         WHorizontalList w2 = theme.horizontalList();
-        b = w2.add(theme.textBox("Recording Name")).widget();
+        b = w2.add(theme.textBox("Recording Name")).minWidth(400).expandX().widget();
         l.add(w2);
-        return l;
+        info.setReturnValue(l);
     }
 
     @Unique
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if (recording) posList.add(new AnglePos(mc.player.getPos(), mc.player.getYaw(), mc.player.getPitch())); // recording
+        if (recording)
+            posList.add(new AnglePos(mc.player.getPos(), mc.player.getYaw(), mc.player.getPitch())); // recording
         if (playing) { // playback
             if (!posList.isEmpty()) {
                 AnglePos angles = posList.remove(0);
@@ -120,8 +113,7 @@ public class FakePlayerMixin {
                     entity.updateTrackedPositionAndAngles(angles.getPos().x, angles.getPos().y, angles.getPos().z, angles.getYaw(), angles.getPitch(), 3, false);
                     entity.updateTrackedHeadRotation(angles.getYaw(), 3);
                 });
-            }
-            else {
+            } else {
                 if (!posList2.isEmpty() && loop.get()) posList.addAll(posList2); // loop at the end
                 else playing = false;
             }

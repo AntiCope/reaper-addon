@@ -8,20 +8,15 @@ import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
-import net.minecraft.client.util.Window;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import java.io.IOException;
 
 @Mixin(
     value = {MinecraftClient.class},
     priority = 1001
 )
-public abstract class MincraftClientMixin implements IMinecraftClient {
+public abstract class MinecraftClientMixin implements IMinecraftClient {
 
     @Redirect(
         method = {"handleBlockBreaking"},

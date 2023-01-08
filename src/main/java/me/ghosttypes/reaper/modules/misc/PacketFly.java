@@ -28,9 +28,9 @@ import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShapes;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -658,7 +658,7 @@ public class PacketFly extends ReaperModule {
         }
 
         public TimeVec3d(Vec3i vec, long time) {
-            super(new Vec3f(vec.getX(), vec.getY(), vec.getZ()));
+            super(new Vector3f(vec.getX(), vec.getY(), vec.getZ()));
             this.time = time;
         }
 
