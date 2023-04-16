@@ -55,11 +55,12 @@ public class ChorusPredict extends ReaperModule {
     }
 
     @EventHandler
-    private void onSentPacket(PacketEvent.Sent event) {
+    private void onSentPacket(PacketEvent.Send event) {
         if (!(event.packet instanceof TeleportConfirmC2SPacket packet)) return;
 
         if (packet.getTeleportId() == tel) {
             tel = -1;
+
             event.cancel();
         } else vec = null;
     }

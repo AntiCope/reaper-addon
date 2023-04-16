@@ -26,6 +26,7 @@ import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
@@ -35,6 +36,7 @@ import org.joml.Vector3f;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
@@ -462,8 +464,8 @@ public class PacketFly extends ReaperModule {
 
                 ((PlayerPositionLookS2CPacketAccessor) event.packet).setYaw(mc.player.getYaw());
                 ((PlayerPositionLookS2CPacketAccessor) event.packet).setPitch(mc.player.getPitch());
-                packet.getFlags().remove(PlayerPositionLookS2CPacket.Flag.X_ROT);
-                packet.getFlags().remove(PlayerPositionLookS2CPacket.Flag.Y_ROT);
+                packet.getFlags().remove(PositionFlag.X_ROT);
+                packet.getFlags().remove(PositionFlag.Y_ROT);
                 teleportId = packet.getTeleportId();
             } else {
                 teleportId = 0;

@@ -471,7 +471,7 @@ public class BedGod extends ReaperModule {
         List<RecipeResultCollection> recipeResultCollectionList = mc.player.getRecipeBook().getResultsForGroup(RecipeBookGroup.CRAFTING_MISC);
         for (RecipeResultCollection recipeResultCollection : recipeResultCollectionList) {
             for (Recipe<?> recipe : recipeResultCollection.getRecipes(true)) {
-                if (recipe.getOutput().getItem() instanceof BedItem) { // find bed recipe (matches to whatever wool/planks you have)
+                if (recipe.getOutput(mc.world.getRegistryManager()).getItem() instanceof BedItem) { // find bed recipe (matches to whatever wool/planks you have)
                     assert mc.interactionManager != null;
                     mc.interactionManager.clickRecipe(h.syncId, recipe, false); // click the recipe
                     Interactions.windowClick(h, 0, SlotActionType.QUICK_MOVE, 1); // pick up the result and move to our inventory

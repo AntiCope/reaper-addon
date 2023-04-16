@@ -109,8 +109,8 @@ public class BlockHelper {
         return new Vector3d().set(pos.getX(), pos.getY(), pos.getZ());
     }
     public static Vec3d vec3d(BlockPos pos) {return new Vec3d(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);}
-    public static Vec3i vec3i(BlockPos pos) {return new Vec3i(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D);}
-    public static Vec3i vec3i(Vec3d pos) {return new Vec3i(pos.getX(), pos.getY(), pos.getZ());}
+    public static Vec3i vec3i(BlockPos pos) {return new Vec3i(pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1);}
+    public static Vec3i vec3i(Vec3d pos) {return new Vec3i((int) pos.getX(), (int) pos.getY(), (int) pos.getZ());}
 
     public static boolean isHole(BlockPos p) {
         for (CardinalDirection cd : CardinalDirection.values()) if (isAir(p.offset(cd.toDirection()))) return false;
