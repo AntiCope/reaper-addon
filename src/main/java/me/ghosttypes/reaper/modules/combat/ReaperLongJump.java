@@ -84,7 +84,7 @@ public class ReaperLongJump extends Module {
         charged = false;
         moved = false;
 
-        if (step.get()) mc.player.stepHeight = 0.5f;
+        if (step.get()) mc.player.setStepHeight(0.5f);
     }
 
     @EventHandler
@@ -127,7 +127,7 @@ public class ReaperLongJump extends Module {
 
             if (moved) {
                 durationTicked++;
-                if (step.get()) mc.player.stepHeight = stepHeight.get().floatValue();
+                if (step.get()) mc.player.setStepHeight(stepHeight.get().floatValue());
             }
         }
         if (startPos != null && (Math.sqrt(mc.player.squaredDistanceTo(startPos)) >= distance.get() || (durationTicked * factor.get()) > durationTicks.get())) toggle();

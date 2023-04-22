@@ -21,7 +21,7 @@ public class BlockBuilder {
     public static boolean isVecListComplete(ArrayList<Vec3d> vlist) {
         if (vlist == null || vlist.isEmpty()) return false;
         BlockPos ppos = mc.player.getBlockPos();
-        for (Vec3d b: vlist) if (BlockHelper.canPlace(ppos.add(b.x, b.y, b.z))) return false;
+        for (Vec3d b: vlist) if (BlockHelper.canPlace(ppos.add((int)b.x, (int)b.y, (int)b.z))) return false;
         return true;
     }
 
@@ -34,7 +34,7 @@ public class BlockBuilder {
     public static ArrayList<BlockPos> vecToPos(BlockPos center, ArrayList<Vec3d> vlist) {
         ArrayList<BlockPos> blocks = new ArrayList<>();
         for (Vec3d v : vlist) {
-            BlockPos p = center.add(v.x, v.y, v.z);
+            BlockPos p = center.add((int)v.x, (int)v.y, (int)v.z);
             blocks.add(p);
         }
         return blocks;

@@ -253,7 +253,7 @@ public class ElytraBotThreaded extends ReaperModule {
     private int x, z;
     private int startingTotems;
     private boolean watchTotems;
-    private double jumpY = -1;
+    private int jumpY = -1;
     private int packetsSent, lagbackCounter, useBaritoneCounter;
     private boolean lagback, toggledNoFall, isRunning;
     private double blocksPerSecond;
@@ -319,7 +319,7 @@ public class ElytraBotThreaded extends ReaperModule {
         else {
             x = gotoX.get();
             z = gotoZ.get();
-            goal = new BlockPos(x, mc.player.getY() + up, z);
+            goal = new BlockPos(x, (int)mc.player.getY() + up, z);
             Goal = ("X: " + x + ", Z: " + z);
         }
 
@@ -517,7 +517,7 @@ public class ElytraBotThreaded extends ReaperModule {
             fireworkTimer.ms = 0;
 
             if (mc.player.isOnGround()) {
-                jumpY = mc.player.getY();
+                jumpY = (int)mc.player.getY();
                 generatePath();
                 mc.player.jump();
                 if (debug.get()) info("Path generated, taking off.");
@@ -677,7 +677,7 @@ public class ElytraBotThreaded extends ReaperModule {
             }
 
             if (flyMode.get() == FlyMode.Firework) {
-                Vec3d vec = new Vec3d(path.get(path.size() - 1).add(0.5, 0.5, 0.5).getX(), path.get(path.size() - 1).add(0.5, 0.5, 0.5).getY(), path.get(path.size() - 1).add(0.5, 0.5, 0.5).getZ());
+                Vec3d vec = new Vec3d(path.get(path.size() - 1).add(1, 1, 1).getX(), path.get(path.size() - 1).add(1, 1, 1).getY(), path.get(path.size() - 1).add(1, 1, 1).getZ());
                 mc.player.setYaw((float) Rotations.getYaw(vec));
                 mc.player.setPitch((float) Rotations.getPitch(vec));
                 if (debug.get()) info("Rotating to use firework.");
@@ -733,7 +733,7 @@ public class ElytraBotThreaded extends ReaperModule {
             if (botMode.get() == Mode.Overworld) {
                 start = getPlayerPos().add(0, 4, 0);
             } else if (Math.abs(jumpY - mc.player.getY()) <= 2) {
-                start = new BlockPos(mc.player.getX(), jumpY + 1, mc.player.getZ());
+                start = new BlockPos((int)mc.player.getX(), jumpY + 1, (int)mc.player.getZ());
             } else {
                 start = getPlayerPos().add(0, 1, 0);
             }
@@ -854,9 +854,9 @@ public class ElytraBotThreaded extends ReaperModule {
     public BlockPos generateGoalFromDirection(DirectionUtil direction, int up) {
         // since we call mc.player.getX/Y/Z multiple times we should just have them as variables
         // and use those
-        double x = mc.player.getX();
-        double y = mc.player.getY();
-        double z = mc.player.getZ();
+        int x = (int)mc.player.getX();
+        int y = (int)mc.player.getY();
+        int z = (int)mc.player.getZ();
         if (direction == DirectionUtil.ZM) {
             return new BlockPos(0, y + up, z - 30000000);
         } else if (direction == DirectionUtil.ZP) {
@@ -877,7 +877,7 @@ public class ElytraBotThreaded extends ReaperModule {
     }
 
     private BlockPos getPlayerPos() {
-        return new BlockPos(mc.player.getX(), mc.player.getY(), mc.player.getZ());
+        return new BlockPos((int)mc.player.getX(), (int)mc.player.getY(), (int)mc.player.getZ());
     }
 
     private void walkTo(BlockPos goal, boolean sleepUntilDone) {

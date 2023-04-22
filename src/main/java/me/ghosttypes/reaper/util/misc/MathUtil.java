@@ -48,13 +48,13 @@ public class MathUtil {
     public static BlockPos offsetByVelocity(BlockPos pos, PlayerEntity player) {
         if (pos == null || player == null) return null;
         Vec3d velocity = getVelocity(player);
-        return pos.add(velocity.x, velocity.y, velocity.z);
+        return pos.add((int)velocity.x, (int)velocity.y, (int)velocity.z);
     }
 
     public static BlockPos generatePredict(BlockPos pos, PlayerEntity player, int ticks) {
         if (pos == null || player == null) return null;
         Vec3d velocity = getVelocity(player);
-        Vec3i v = new Vec3i(velocity.x * ticks, velocity.y * ticks, velocity.z * ticks);
+        Vec3i v = new Vec3i((int)velocity.x * ticks, (int)velocity.y * ticks, (int)velocity.z * ticks);
         return pos.add(v);
     }
 
